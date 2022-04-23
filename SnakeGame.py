@@ -10,6 +10,7 @@ pygame.display.set_caption('Snake game by kiyohiro')
 white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255,0,0)
+gray = (120, 120, 120)
 
 game_over = False
 
@@ -28,6 +29,16 @@ snake_speed = 20
 clock = pygame.time.Clock()
 
 font_style = pygame.font.SysFont(None, 50)
+
+def draw_borders():
+    for i in range(int(display_width / snake_block)):
+        pygame.draw.rect(display, gray, [snake_block * i, 0, snake_block, snake_block])
+        pygame.draw.rect(display, gray, [snake_block * i, display_height - snake_block, snake_block, snake_block])
+
+    for i in range(int(display_height / snake_block)):
+        pygame.draw.rect(display, gray, [0, snake_block * i, snake_block, snake_block])
+        pygame.draw.rect(display, gray, [display_width - snake_block, snake_block * i, snake_block, snake_block])
+
 
 def message(msg, color):
     message = font_style.render(msg, True, color)
@@ -56,10 +67,13 @@ while not game_over:
     y += y_change
     display.fill(white)
 
-    if x >= display_width or x < 0 or y >= display_height or y < 0:
+    if (x >= (display_width - snake_block) or (x < 0 + snake_block) or (y >= display_height - snake_block) or (y < 0 + snake_block)):
         game_over = True
 
     pygame.draw.rect(display, black, [x, y, snake_block, snake_block])
+
+    draw_borders()
+
     pygame.display.update()
 
     # snake speed
